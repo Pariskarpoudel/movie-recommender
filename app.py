@@ -8,13 +8,28 @@ import pandas as pd
 import pickle
 import numpy as np
 import requests
+import os 
 
 with open('movies.pkl', 'rb') as file:
     df = pickle.load(file)
     # i can use this df and use normal dataframe operations
 
+def download_file_from_url(url, local_file_path):
+    response = requests.get(url)
+    with open(local_file_path, 'wb') as file:
+        file.write(response.content)
 
-with open('similarity.pkl', 'rb') as file:
+# Define the URL and local file path
+url = 'https://drive.google.com/uc?export=download&id=1cSBwkJ6-ADDBgq2EQN0trUx7d9XW3Apq'
+local_file_path = 'similarity.pkl'
+
+# Download the file if it doesn't exist locally
+if not os.path.exists(local_file_path):
+    download_file_from_url(url, local_file_path)
+
+
+
+with open(local_file_path, 'rb') as file:
     similarity = pickle.load(file)
 
 
